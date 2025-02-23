@@ -1,5 +1,16 @@
 let extractedAssets = [];
 
+// Initialize WebAssembly (WASM) module
+let wasmModule;
+
+// Load the WASM file and instantiate it
+async function loadWasm() {
+    const wasmResponse = await fetch('wasmModule.wasm');
+    const wasmArrayBuffer = await wasmResponse.arrayBuffer();
+    wasmModule = await WebAssembly.instantiate(wasmArrayBuffer);
+    console.log('WASM Module Loaded');
+}
+
 // Handle file input selection
 document.getElementById('fileInput').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -15,8 +26,9 @@ document.getElementById('extractButton').addEventListener('click', async functio
     const file = document.getElementById('fileInput').files[0];
     const arrayBuffer = await file.arrayBuffer();
 
-    // Simulate parsing the asset bundle (this would normally be a WebAssembly or complex JS parser)
-    extractedAssets = parseAssetBundle(arrayBuffer);
+    // Simulate extracting assets using the WASM module
+    // Replace this with actual calls to WASM to parse the bundle
+    extractedAssets = parseAssetBundleWithWasm(arrayBuffer);
 
     // Display extracted assets
     const assetListDiv = document.getElementById('assetList');
@@ -50,10 +62,12 @@ document.getElementById('repackageButton').addEventListener('click', function() 
     a.click();
 });
 
-// Simulated asset bundle parsing function (mocked data)
-function parseAssetBundle(arrayBuffer) {
-    // Normally, you would parse the asset bundle here using WebAssembly or specialized code
-    // For now, return mock assets
+// Simulate extracting assets using the WebAssembly module
+function parseAssetBundleWithWasm(arrayBuffer) {
+    // Actual WASM call to parse the asset bundle
+    // This is where you'd call wasmModule.exports.<functionName> to process the data
+    // For now, it's mocked as extracting 3 dummy assets
+    console.log('Extracting with WASM...');
     return [
         { name: 'Asset1', isEnabled: true },
         { name: 'Asset2', isEnabled: true },
@@ -63,8 +77,11 @@ function parseAssetBundle(arrayBuffer) {
 
 // Simulated function for repackaging assets into a new bundle (mocked binary data)
 function repackageAssets(modifiedAssets) {
-    // Normally, you would use WebAssembly or some other process to repackage the assets
+    // Normally, you would use WebAssembly to repackage the assets into Unity format
     // For now, return mock binary data
     const data = new ArrayBuffer(10);  // Mock repackaged binary data
     return data;
 }
+
+// Load the WASM module on page load
+loadWasm();
